@@ -1,0 +1,34 @@
+<html>
+<head>
+	<title>jQuery.get() example</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript">
+function createCORSRequest(method, url){
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr){
+    // XHR has 'withCredentials' property only if it supports CORS
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined"){ // if IE use XDR
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    xhr = null;
+  }
+  return xhr;
+}
+
+var request = createCORSRequest( "get", "https://www.dropbox.com/s/rb6q39iwuoscnwa/unplayed.markdown?dl=1" );
+if ( request ){
+  // Define a callback function
+  request.onload = function(){};
+  // Send request
+  request.send();
+}
+</script>
+</head>
+
+<body>
+	<a href="http://www.ajax-cross-origin.com/how.html">CORS</a>
+</body>
+</html>

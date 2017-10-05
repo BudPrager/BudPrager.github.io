@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Unplayed</title>
+	<meta name="viewport" content="width=320, initial-scale=1, minimum-scale=0.45" />
+	<!-- jQuery -->
+	<script type="text/javascript" src="libs/jquery-1.8.3.min.js"></script>
+	
+	<!-- Showdown and Unplayed classes -->
+	<script type="text/javascript" src="libs/showdown.js"></script>
+	<script type="text/javascript" src="libs/unplayed.js"></script>
+	
+	<!-- Star rating classes -->
+	<script type="text/javascript" src="libs/star-rating/jquery.rating.pack.js"></script>
+	<script type="text/javascript" src="libs/star-rating/jquery.MetaData.js"></script>
+	<script type="text/javascript" src="libs/star-rating/jquery.form.js"></script>
+	
+	<!-- Styles -->
+	<link href='libs/star-rating/jquery.rating.css' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href="libs/unplayed.css" rel="stylesheet" type="text/css">
+	
+	<script type="text/javascript">
+$(document).ready(function(){
+    $('#unplayedheader').click(function() {
+	$('#unplayed').slideToggle('slow', function() {
+		// Animation complete.
+		});
+	});
+	
+	$('#unbeatenheader').click(function() {
+	$('#unbeaten').slideToggle('slow', function() {
+		// Animation complete.
+		});
+	});
+	
+	$('#completedheader').click(function() {
+	$('#completed').slideToggle('slow', function() {
+		// Animation complete.
+		});
+	});
+	
+	$('#multiplayerheader').click(function() {
+	$('#multiplayer').slideToggle('slow', function() {
+		// Animation complete.
+		});
+	});
+})	
+</script>
+</head>
+<body>
+
+<div class="column">
+<a id="unplayedheader" class="header"><h1>Unplayed</h1></a>
+<div id="unplayed" class="content"></div>
+</div>
+
+<div class="column">
+<a id="unbeatenheader" class="header"><h1>Uncompleted</h1></a>
+<div id="unbeaten" class="content"></div>
+</div>
+
+<div class="column">
+<a id="completedheader" class="header"><h1>Completed</h1></a>
+<div id="completed" class="content"></div>
+</div>
+
+<div class="column">
+<a id="multiplayerheader" class="header"><h1>Multiplayer</h1></a>
+<div id="multiplayer" class="content"></div>
+</div>
+
+<div id="footer"><a href="http://shauninman.com/">Shaun Inman</a> gave <a href="https://shepherdnick.github.io/unplayed/">Nick</a> this idea. And I have stolen it from him.<a href="http://shauninman.com/archive/2011/04/18/unplayed">More info</a></div>
+
+</body>
+</html>
