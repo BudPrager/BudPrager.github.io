@@ -57,13 +57,16 @@ div.content
 
 #footer
 {
-	display: none;
 	margin: 16px 16px 0;
 	padding: 16px 0 0;
 	border-top: 1px solid #000080;
 	float: none;
 	clear: both;
-	width: auto;
+	width: 100%;
+	height: 2em;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
 }
 
 h1
