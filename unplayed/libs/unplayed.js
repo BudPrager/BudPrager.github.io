@@ -8,8 +8,8 @@ function startGui(){
 	getData("grvgh91697k1vq8", "unbeaten.markdown");
 	getData("hwaoanz6imhbdkm", "completed.markdown");
 	getData("7i1abbuqtngl4ke", "multiplayer.markdown");
-	
-	// add star ratings to the abandoned and the beaten lists
+
+    // add star ratings to the abandoned and the beaten lists
 	starIt("multiplayer");
 	starIt("completed");
 	
@@ -80,6 +80,51 @@ function starIt(holdingId)
 	});
 }
 
+function percentageIt(holdingId){
+    // find the right DOM element
+    var html = "";
+    var selector = "#" + holdingId;
+    var $column = $(selector);
+
+    // for each list item in the DOM element (every game in a column)
+    $column.find('li').each(function (index) {
+        var htmlBlock = $(this).html();
+        // try to find the star rating e.g. [3/5]
+        var allStarRatings = htmlBlock.match(/\[\d+%\]/g);
+
+        // get the number of stars we want to give the game
+        var starRating = /\[(\d+)%\]/g;
+        if (allStarRatings != null && typeof (allStarRatings) != 'undefined') {
+            if (allStarRatings.length > 0) {
+                var match = starRating.exec(allStarRatings[0]); //regex match
+
+                var percentage = match[1];
+
+                html += "<div class='progress' style='height: 10px; width: 150px; margin-bottom:5px'>"
+                        + "<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='" + percentage + "' aria-valuemin='0' aria-valuemax='100' style='width:" + percentage + "%; font-size:xx-small;line-height:11px;' data-placement='bottom' data-toggle='tooltip' title='" + percentage + "% complete'>"
+                            + percentage + "% <span class='sr-only'>" + percentage + "% Complete</span>"
+                        + "</div>"
+                    + "</div>";
+            }
+        }
+
+        // actually remove the [60%] from the page
+        htmlBlock = htmlBlock.replace(/\[\d+%\]/g, "");
+        htmlBlock += html;
+
+        // add the new html to the DOM
+        $(this).html(htmlBlock);
+
+        // blank down the vars we used
+        html = "";
+        htmlBlock = "";
+    });
+}
+
+function playerIt(holdingId) {
+
+}
+
 function dataCalledBack(nameOfFile, data)
 {
 	switch(nameOfFile)
@@ -91,6 +136,7 @@ function dataCalledBack(nameOfFile, data)
 		case "unbeaten.markdown":
 			var unbeatenGames = spanIt(converter.makeHtml(data));
 			$("#unbeaten").html(unbeatenGames);
+			percentageIt("unbeaten");
 			break;
 		case "completed.markdown":
 			var completedGames = spanIt(converter.makeHtml(data));
