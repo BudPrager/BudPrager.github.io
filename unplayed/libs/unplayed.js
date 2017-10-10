@@ -122,7 +122,84 @@ function percentageIt(holdingId){
 }
 
 function playerIt(holdingId) {
+    //[2|4]
 
+    // find the right DOM element
+    var html = "";
+    var selector = "#" + holdingId;
+    var $column = $(selector);
+
+    // for each list item in the DOM element (every game in a column)
+    $column.find('li').each(function (index) {
+        var htmlBlock = $(this).html();
+        // try to find the star rating e.g. [3/5]
+        var allStarRatings = htmlBlock.match(/\[((\d+)(?:(?:\s*)([-\|/]|or|to)(?:\s*)(\d+))?)\]/g);
+
+        // get the number of stars we want to give the game
+        var starRating = /\[((\d+)(?:(?:\s*)([-\|/]|or|to)(?:\s*)(\d+))?)\]/g;
+        if (allStarRatings != null && typeof (allStarRatings) != 'undefined') {
+            if (allStarRatings.length > 0) {
+                var match = starRating.exec(allStarRatings[0]); //regex match
+                //Group 1:  2|4
+                //Group 2:  2
+                //Group 3:  |
+                //Group 4:  4
+
+
+                html += "<div style='height:16px;' data-placement='bottom' data-toggle='tooltip' title='" + match[1] + " Players'>";
+
+                var minPlayers = parseInt(match[2]);
+                if (minPlayers > 0)
+                {
+                    html += "<div style='float:left; background: url(player-icon.gif) no-repeat 0 0px; background-size: 32px 48px; width: 16px; height: 16px;'></div>";
+                }
+
+                for (var i = 1; i < minPlayers; i++) {
+                    var offset = 8 * i;
+                    html += "<div style='float:left; background: url(player-icon.gif) no-repeat -16px 0px; background-size: 32px 48px;width: 16px; height: 16px; position: relative;left: -" + offset + "px;'></div>";
+                }
+                
+                if(match[3] !== undefined){
+                    var maxPlayers = parseInt(match[4]);
+                    
+                    if (match[3] === "-" || match[3] === "to") {
+                        for (var i = 0; i < (maxPlayers - minPlayers) ; i++) {
+                            var offset = (minPlayers + i) * 8;
+                            html += "<div style='float:left; background: url(player-icon.gif) no-repeat -16px -16px; background-size: 32px 48px;width: 16px; height: 16px; position: relative;left: -"+ offset +"px;'></div>";
+                        }
+                    } else if(match[3].length > 0) {
+                        html += "<div style='float:left; background: url(player-icon.gif) no-repeat 0 -16px; background-size: 32px 48px; width: 16px; height: 16px;'></div>";
+                        for (var i = 1; i < maxPlayers; i++) {
+                            var offset = 8 * i;
+                            html += "<div style='float:left; background: url(player-icon.gif) no-repeat -16px -16px; background-size: 32px 48px;width: 16px; height: 16px; position: relative;left: -" + offset + "px;'></div>";
+                        }
+                    }
+
+                }
+                 + "<div style='clear:both;'></div>";
+                + "</div>";
+
+                //var percentage = match[1];
+
+                //html += "<div class='progress' style='height: 10px; width: 150px; margin-bottom:5px'>"
+                //        + "<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='" + percentage + "' aria-valuemin='0' aria-valuemax='100' style='width:" + percentage + "%; font-size:xx-small;line-height:11px;' data-placement='bottom' data-toggle='tooltip' title='" + percentage + "% complete'>"
+                //            + percentage + "% <span class='sr-only'>" + percentage + "% Complete</span>"
+                //        + "</div>"
+                //    + "</div>";
+            }
+        }
+
+        // actually remove the [60%] from the page
+        htmlBlock = htmlBlock.replace(/\[((\d+)(?:(?:\s*)([-\|/]|or|to)(?:\s*)(\d+))?)\]/g, "");
+        htmlBlock += html;
+
+        // add the new html to the DOM
+        $(this).html(htmlBlock);
+
+        // blank down the vars we used
+        html = "";
+        htmlBlock = "";
+    });
 }
 
 function dataCalledBack(nameOfFile, data)
@@ -137,6 +214,7 @@ function dataCalledBack(nameOfFile, data)
 			var unbeatenGames = spanIt(converter.makeHtml(data));
 			$("#unbeaten").html(unbeatenGames);
 			percentageIt("unbeaten");
+			playerIt("unbeaten");
 			break;
 		case "completed.markdown":
 			var completedGames = spanIt(converter.makeHtml(data));
